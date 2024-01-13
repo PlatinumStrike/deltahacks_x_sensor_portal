@@ -1,8 +1,23 @@
 import Image from "next/image";
 import { lexend_deca } from "@/app/resources/fonts";
 import Bubble from "@/app/components/bubble";
+import { createClient } from "redis";
 
-export default function Home() {
+export default async function Home() {
+  const client = createClient({
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    socket: {
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
+    },
+  });
+  client.connect();
+  client.on("error", (err) => console.log("Redis Client Error", err));
+  process.on("exit", function () {
+    client.quit();
+  });
+
   return (
     <main className="flex min-h-screen flex-col justify-start p-24">
       <h1
@@ -20,7 +35,11 @@ export default function Home() {
             Community&apos;s Environment module.
           </p>
         </div>
-        <Bubble>Connecting to...</Bubble>
+        <Bubble>
+          Connecting to: {process.env.DB_HOST}
+          <br />
+          Connection State: {((await client.ping()) == "PONG").toString()}
+        </Bubble>
       </div>
     </main>
   );
