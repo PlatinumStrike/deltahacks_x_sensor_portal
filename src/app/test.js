@@ -1,0 +1,3 @@
+const test = '{"timeStamp":"2024-01-14 01:32:07.616349", "temp":"26.40", "humidity":"32.20", "sound":"41.44"},{ "timeStamp": "2024-01-14 01:32:18.982349", "temp": "26.32", "humidity": "31.60", "sound": "41.36" },{ "timeStamp": "2024-01-14 01:32:30.348349", "temp": "26.30", "humidity": "31.00", "sound": "41.44" },{ "timeStamp": "2024-01-14 01:32:41.712349", "temp": "26.20", "humidity": "31.00", "sound": "41.36" },{ "timeStamp": "2024-01-14 01:32:53.077349", "temp": "26.20", "humidity": "31.00", "sound": "41.51" },{ "timeStamp": "2024-01-14 01:33:04.442349", "temp": "26.12", "humidity": "30.40", "sound": "41.36" }'
+
+export default test
