@@ -2,6 +2,8 @@ import Image from "next/image";
 import { lexend_deca } from "@/app/resources/fonts";
 import Bubble from "@/app/components/bubble";
 import { createClient } from "redis";
+import LineChartCustom from "@/app/components/lineChart";
+import test from "@/app/test";
 
 export default async function Home() {
   const client = await createClient({
@@ -40,6 +42,11 @@ export default async function Home() {
             Connection State: {ping == "PONG" ? "Connected" : "Not Connected"}
           </p>
         </Bubble>
+      </div>
+      <div className="h-[35ch] m-4 py-[5ch]">
+        <LineChartCustom data={test} xKey="timeStamp" yKeys={["sound"]} />
+        <LineChartCustom data={test} xKey="timeStamp" yKeys={["temp"]} />
+        <LineChartCustom data={test} xKey="timeStamp" yKeys={["humidity"]} />
       </div>
     </main>
   );
