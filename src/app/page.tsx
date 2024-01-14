@@ -4,19 +4,18 @@ import Bubble from "@/app/components/bubble";
 import { createClient } from "redis";
 
 export default async function Home() {
-  const client = createClient({
+  const client = await createClient({
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     socket: {
       host: process.env.DB_HOST,
       port: parseInt(process.env.DB_PORT),
     },
-  });
-  client.connect();
-  client.on("error", (err) => console.log("Redis Client Error", err));
-  process.on("exit", function () {
-    client.quit();
-  });
+  })
+    .on("error", (err) => console.log("Redis Client Error", err))
+    .connect();
+  let ping = await client.ping();
+  await client.disconnect();
 
   return (
     <main className="flex min-h-screen flex-col justify-start p-24">
@@ -28,17 +27,18 @@ export default async function Home() {
         Community Environment Module Portal
       </h1>
       <div className="flex flex-row">
-        <div className="flex flex-col max-w-[25ch] align-center p-8">
+        <div className="flex flex-col max-w-[30ch] align-center p-8">
           <h3 className="mb-3 text-2xl font-semibold">Hi, You made it!</h3>
           <p className="m-0 text-base opacity-50">
             This is where you can see all the statistics from your
             Community&apos;s Environment module.
           </p>
         </div>
-        <Bubble>
-          Connecting to: {process.env.DB_HOST}
-          <br />
-          Connection State: {((await client.ping()) == "PONG").toString()}
+        <Bubble className="flex-col">
+          <p className="m-2">Connecting to: {process.env.DB_HOST}</p>
+          <p className="m-2">
+            Connection State: {ping == "PONG" ? "Connected" : "Not Connected"}
+          </p>
         </Bubble>
       </div>
     </main>
